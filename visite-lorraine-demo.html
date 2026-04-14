@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visite · Lorraine</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --or:#B8962E;--or-light:#D4AF55;--or-pale:#F5EDD0;
+  --noir:#1A1612;--pierre:#F0EAD6;--pierre-fonce:#E0D5BC;
+  --texte:#2C2416;--muted:#6B5E48;
+}
+body{font-family:'EB Garamond',Georgia,serif;color:var(--texte);background:var(--pierre);}
+.page{display:none;}
+.page.active{display:block;}
+
+/* ---- NAV ---- */
+nav{
+  background:var(--noir);padding:0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  height:56px;border-bottom:1px solid var(--or);
+  position:sticky;top:0;z-index:100;gap:1rem;
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;
+  letter-spacing:0.22em;color:var(--or-light);text-transform:uppercase;
+  white-space:nowrap;flex-shrink:0;cursor:pointer;
+}
+.nav-logo span{color:#C8BFAA;}
+.nav-links{display:flex;gap:1.6rem;list-style:none;flex:1;justify-content:center;}
+.nav-links a{
+  color:#C8BFAA;text-decoration:none;font-size:11px;
+  letter-spacing:0.14em;text-transform:uppercase;white-space:nowrap;
+  cursor:pointer;transition:color 0.15s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--or-light);}
+.nav-right{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.nav-sep{width:1px;height:16px;background:rgba(184,150,46,0.3);margin:0 6px;}
+.lang-btn{
+  font-size:10px;letter-spacing:0.1em;color:#A89E85;border:none;
+  background:transparent;padding:3px 5px;cursor:pointer;
+  font-family:'EB Garamond',serif;transition:color 0.15s;
+}
+.lang-btn:hover{color:var(--or-light);}
+.lang-btn.active{color:var(--or-light);border-bottom:1px solid var(--or);}
+
+/* ---- COMPOSANTS PARTAGÉS ---- */
+.hero{background:var(--noir);padding:5.5rem 2rem 4.5rem;text-align:center;}
+.hero-ornament{color:var(--or);font-size:11px;letter-spacing:0.4em;text-transform:uppercase;margin-bottom:1.2rem;opacity:0.75;}
+.hero-ornament::before,.hero-ornament::after{content:'❧';margin:0 1rem;opacity:0.5;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:#fff;letter-spacing:0.05em;line-height:1.12;margin-bottom:0.5rem;}
+.hero h1 em{font-style:italic;color:var(--or-light);}
+.hero-sub{font-size:15px;color:#8A8070;letter-spacing:0.1em;margin:1rem 0 1.8rem;font-style:italic;}
+.hero-divider{width:60px;height:1px;background:linear-gradient(to right,transparent,var(--or),transparent);margin:0 auto 1.8rem;}
+.btn{
+  display:inline-block;border:1px solid var(--or);color:var(--or-light);
+  padding:12px 34px;font-family:'Cormorant Garamond',serif;font-size:13px;
+  letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;
+  background:transparent;margin:0 6px;text-decoration:none;transition:background 0.2s;
+}
+.btn:hover{background:rgba(184,150,46,0.12);}
+.btn.filled{background:var(--or);color:var(--noir);}
+.btn.filled:hover{background:var(--or-light);}
+.btn.dark{border-color:var(--or);color:var(--or-light);}
+
+.section{padding:3.5rem 2.5rem;}
+.section-header{text-align:center;margin-bottom:2.2rem;}
+.eyebrow{font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:var(--or);margin-bottom:0.7rem;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--texte);letter-spacing:0.04em;}
+.divider{width:42px;height:1px;background:var(--or);margin:0.8rem auto 0;}
+.divider.left{margin:0.8rem 0 0;}
+
+footer{background:var(--noir);border-top:1px solid var(--or);padding:1.4rem 2.5rem;display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-size:11px;color:#5C5044;letter-spacing:0.08em;}
+.footer-orn{color:var(--or);font-size:14px;opacity:0.4;}
+
+/* ---- PAGE ACCUEIL ---- */
+.services-band{background:var(--or);display:flex;justify-content:center;}
+.svc-item{flex:1;max-width:200px;padding:1.1rem 0.8rem;text-align:center;border-right:0.5px solid rgba(26,22,18,0.18);cursor:pointer;transition:background 0.15s;}
+.svc-item:hover{background:rgba(255,255,255,0.12);}
+.svc-item:last-child{border-right:none;}
+.svc-icon{font-size:15px;margin-bottom:3px;color:var(--noir);}
+.svc-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--noir);font-family:'EB Garamond',serif;}
+
+.visites-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;max-width:960px;margin:0 auto;}
+.vcard{background:#fff;border:0.5px solid var(--pierre-fonce);padding:1.5rem 1.3rem;text-align:center;cursor:pointer;transition:border-color 0.2s;}
+.vcard:hover{border-color:var(--or);}
+.vcard-icon{width:40px;height:40px;border:1px solid var(--or);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 0.9rem;font-size:16px;color:var(--or);}
+.vcard h3{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--texte);margin-bottom:0.4rem;}
+.vcard p{font-size:12.5px;color:var(--muted);line-height:1.55;font-style:italic;}
+.vcard-tag{display:inline-block;margin-top:0.9rem;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--or);border-bottom:0.5px solid var(--or);padding-bottom:1px;}
+
+.actu-strip{background:var(--pierre-fonce);padding:3.5rem 2.5rem;}
+.actu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem;}
+.acard{background:var(--pierre);border:0.5px solid var(--pierre-fonce);padding:1.3rem;cursor:pointer;transition:border-color 0.2s;}
+.acard:hover{border-color:var(--or);}
+.atag{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--or);margin-bottom:0.4rem;}
+.acard h4{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;color:var(--texte);line-height:1.35;margin-bottom:0.4rem;}
+.acard p{font-size:12px;color:var(--muted);line-height:1.5;font-style:italic;}
+.adate{font-size:10px;color:var(--muted);margin-top:0.6rem;letter-spacing:0.06em;}
+
+/* ---- PAGE VISITES ---- */
+.visites-hero-band{background:var(--or);padding:1rem 2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.filter-btn{
+  font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--noir);border:1px solid rgba(26,22,18,0.3);
+  background:transparent;padding:6px 16px;cursor:pointer;
+  font-family:'EB Garamond',serif;transition:background 0.15s;
+}
+.filter-btn.active,.filter-btn:hover{background:rgba(26,22,18,0.15);}
+
+.visites-catalogue{display:grid;grid-template-columns:repeat(2,1fr);gap:1.6rem;max-width:960px;margin:0 auto;}
+.cat-card{background:#fff;border:0.5px solid var(--pierre-fonce);display:grid;grid-template-columns:120px 1fr;cursor:pointer;transition:border-color 0.2s;}
+.cat-card:hover{border-color:var(--or);}
+.cat-img{background:var(--pierre-fonce);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--or);}
+.cat-body{padding:1.2rem;}
+.cat-badge{display:inline-block;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);border:0.5px solid var(--or);padding:2px 8px;margin-bottom:0.6rem;}
+.cat-card h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--texte);margin-bottom:0.4rem;}
+.cat-card p{font-size:12.5px;color:var(--muted);line-height:1.55;font-style:italic;}
+.cat-meta{display:flex;gap:1rem;margin-top:0.8rem;}
+.cat-meta span{font-size:10px;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;}
+.cat-meta span::before{content:'◦ ';color:var(--or);}
+
+/* ---- PAGE SCOLAIRES ---- */
+.sco-intro{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:960px;margin:0 auto;align-items:start;}
+.niveau-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
+.niv-card{background:#fff;border:0.5px solid var(--pierre-fonce);padding:1.2rem;text-align:center;cursor:pointer;transition:border-color 0.2s;}
+.niv-card:hover{border-color:var(--or);}
+.niv-card h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--texte);margin-bottom:0.3rem;}
+.niv-card p{font-size:11.5px;color:var(--muted);font-style:italic;}
+.niv-badge{display:inline-block;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--or);border-bottom:0.5px solid var(--or);margin-bottom:0.5rem;}
+
+.sco-features{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:960px;margin:0 auto;}
+.feat-item{padding:1.4rem;border-left:2px solid var(--or);}
+.feat-item h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--texte);margin-bottom:0.4rem;}
+.feat-item p{font-size:12.5px;color:var(--muted);line-height:1.6;font-style:italic;}
+
+.tarif-band{background:var(--noir);padding:3rem 2.5rem;text-align:center;}
+.tarif-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;max-width:760px;margin:1.8rem auto 0;}
+.tarif-card{background:rgba(255,255,255,0.04);border:0.5px solid rgba(184,150,46,0.3);padding:1.5rem;text-align:center;}
+.tarif-card.featured{border-color:var(--or);background:rgba(184,150,46,0.08);}
+.tarif-prix{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--or-light);margin:0.5rem 0;}
+.tarif-label{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:#8A8070;}
+.tarif-detail{font-size:12px;color:#A89E85;margin-top:0.8rem;font-style:italic;line-height:1.5;}
+
+/* ---- PAGE RÉSERVATION ---- */
+.resa-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:3rem;max-width:960px;margin:0 auto;}
+
+.cal-full{background:#fff;border:0.5px solid var(--pierre-fonce);padding:1.6rem;}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;}
+.cal-month-label{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:0.12em;color:var(--texte);text-transform:uppercase;}
+.cal-nav-btn{font-size:18px;color:var(--or);cursor:pointer;padding:0 8px;user-select:none;}
+.cal-nav-btn:hover{color:var(--or-light);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;}
+.cal-dh{font-size:9px;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;padding-bottom:6px;}
+.cal-d{font-size:12px;padding:7px 2px;cursor:pointer;color:var(--texte);border-radius:1px;transition:background 0.1s;}
+.cal-d:not(.empty):not(.passe):hover{background:var(--pierre-fonce);}
+.cal-d.empty{color:transparent;cursor:default;}
+.cal-d.dispo{background:var(--or);color:var(--noir);font-weight:500;}
+.cal-d.dispo:hover{background:var(--or-light);}
+.cal-d.dispo-light{background:#E8D898;color:#5C4A10;}
+.cal-d.complet{background:var(--pierre-fonce);color:var(--muted);cursor:not-allowed;}
+.cal-d.passe{color:var(--pierre-fonce);cursor:default;}
+.cal-d.today{border:1px solid var(--or);font-weight:500;}
+.cal-d.selected{outline:2px solid var(--or);}
+
+.cal-legend{display:flex;gap:14px;margin-top:12px;font-size:10px;color:var(--muted);letter-spacing:0.08em;}
+.leg-item{display:flex;align-items:center;gap:5px;}
+.leg-dot{width:9px;height:9px;border-radius:1px;}
+
+.resa-panel{display:flex;flex-direction:column;gap:1.4rem;}
+.resa-type-select h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--texte);margin-bottom:1rem;}
+.resa-types{display:flex;flex-direction:column;gap:8px;}
+.rtype{
+  display:flex;align-items:center;gap:12px;padding:0.9rem 1rem;
+  border:0.5px solid var(--pierre-fonce);cursor:pointer;transition:border-color 0.2s;background:#fff;
+}
+.rtype:hover,.rtype.active{border-color:var(--or);}
+.rtype-dot{width:8px;height:8px;border-radius:50%;background:var(--pierre-fonce);flex-shrink:0;transition:background 0.15s;}
+.rtype.active .rtype-dot{background:var(--or);}
+.rtype-label{font-size:13px;color:var(--texte);letter-spacing:0.06em;}
+.rtype-sub{font-size:11px;color:var(--muted);font-style:italic;}
+
+.resa-form{background:#fff;border:0.5px solid var(--pierre-fonce);padding:1.4rem;}
+.resa-form h3{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--texte);margin-bottom:1rem;}
+.form-row{margin-bottom:0.9rem;}
+.form-row label{display:block;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.form-row input,.form-row select,.form-row textarea{
+  width:100%;padding:8px 10px;border:0.5px solid var(--pierre-fonce);
+  background:var(--pierre);font-family:'EB Garamond',serif;font-size:13px;
+  color:var(--texte);outline:none;transition:border-color 0.15s;
+}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--or);}
+.form-row textarea{resize:vertical;min-height:70px;}
+.submit-btn{
+  width:100%;padding:12px;background:var(--or);color:var(--noir);
+  border:none;font-family:'Cormorant Garamond',serif;font-size:13px;
+  letter-spacing:0.22em;text-transform:uppercase;cursor:pointer;
+  transition:background 0.2s;margin-top:0.5rem;
+}
+.submit-btn:hover{background:var(--or-light);}
+
+/* ---- PAGE ACTUALITÉS ---- */
+.actu-layout{display:grid;grid-template-columns:1fr 280px;gap:2.5rem;max-width:960px;margin:0 auto;}
+.actu-list{display:flex;flex-direction:column;gap:1.4rem;}
+.actu-article{background:#fff;border:0.5px solid var(--pierre-fonce);display:grid;grid-template-columns:100px 1fr;cursor:pointer;transition:border-color 0.2s;}
+.actu-article:hover{border-color:var(--or);}
+.actu-img{background:var(--pierre-fonce);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--or);}
+.actu-body{padding:1.1rem;}
+.actu-cats{display:flex;gap:6px;margin-bottom:0.5rem;flex-wrap:wrap;}
+.actu-cat{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--or);}
+.actu-article h3{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--texte);margin-bottom:0.4rem;line-height:1.3;}
+.actu-article p{font-size:12px;color:var(--muted);line-height:1.55;font-style:italic;}
+.actu-footer{display:flex;justify-content:space-between;align-items:center;margin-top:0.7rem;}
+.actu-d{font-size:10px;color:var(--muted);letter-spacing:0.06em;}
+.actu-lire{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--or);border-bottom:0.5px solid var(--or);}
+
+.actu-sidebar{display:flex;flex-direction:column;gap:1.4rem;}
+.sidebar-block{background:#fff;border:0.5px solid var(--pierre-fonce);padding:1.2rem;}
+.sidebar-block h4{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:400;color:var(--texte);margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:0.5px solid var(--pierre-fonce);}
+.sidebar-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.s-tag{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 10px;border:0.5px solid var(--pierre-fonce);color:var(--muted);cursor:pointer;transition:border-color 0.15s;}
+.s-tag:hover{border-color:var(--or);color:var(--or);}
+.agenda-item{padding:0.6rem 0;border-bottom:0.5px solid var(--pierre-fonce);}
+.agenda-item:last-child{border-bottom:none;}
+.agenda-date{font-size:10px;letter-spacing:0.08em;color:var(--or);margin-bottom:2px;}
+.agenda-title{font-size:12.5px;color:var(--texte);}
+
+/* ---- PAGE CONFÉRENCES ---- */
+.conf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.6rem;max-width:860px;margin:0 auto;}
+.conf-card{background:#fff;border:0.5px solid var(--pierre-fonce);padding:1.8rem;cursor:pointer;transition:border-color 0.2s;}
+.conf-card:hover{border-color:var(--or);}
+.conf-num{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--pierre-fonce);line-height:1;margin-bottom:0.8rem;}
+.conf-card h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--texte);margin-bottom:0.6rem;}
+.conf-card p{font-size:13px;color:var(--muted);line-height:1.6;font-style:italic;}
+.conf-themes{margin-top:1rem;display:flex;flex-direction:column;gap:4px;}
+.conf-theme{font-size:11.5px;color:var(--texte);padding-left:12px;position:relative;}
+.conf-theme::before{content:'❧';position:absolute;left:0;color:var(--or);font-size:9px;top:2px;}
+
+.conf-public-band{background:var(--pierre-fonce);padding:3rem 2.5rem;}
+.public-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:860px;margin:1.8rem auto 0;}
+.pub-card{background:var(--pierre);border:0.5px solid var(--pierre-fonce);padding:1.2rem;text-align:center;}
+.pub-icon{font-size:22px;color:var(--or);margin-bottom:0.6rem;}
+.pub-card h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;color:var(--texte);margin-bottom:0.3rem;}
+.pub-card p{font-size:12px;color:var(--muted);font-style:italic;line-height:1.5;}
+
+/* ---- PAGE CONTACT ---- */
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:860px;margin:0 auto;}
+.contact-info h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--texte);margin-bottom:1.2rem;}
+.contact-info p{font-size:14px;color:var(--muted);line-height:1.75;font-style:italic;margin-bottom:1.5rem;}
+.contact-items{display:flex;flex-direction:column;gap:1rem;}
+.citem{display:flex;gap:12px;align-items:flex-start;}
+.citem-icon{font-size:14px;color:var(--or);flex-shrink:0;margin-top:2px;}
+.citem-text{font-size:13px;color:var(--texte);line-height:1.5;}
+.citem-label{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px;}
+
+.contact-form-card{background:#fff;border:0.5px solid var(--pierre-fonce);padding:1.8rem;}
+.contact-form-card h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--texte);margin-bottom:1.4rem;}
+
+.partenaires-band{background:var(--pierre-fonce);padding:3rem 2.5rem;text-align:center;}
+.partenaires-grid{display:flex;justify-content:center;gap:1.4rem;flex-wrap:wrap;margin-top:1.8rem;}
+.partner-badge{
+  background:#fff;border:0.5px solid var(--pierre-fonce);padding:0.8rem 1.4rem;
+  font-size:12px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:8px;
+}
+.partner-badge span{color:var(--or);font-size:14px;}
+</style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <div class="nav-logo" onclick="showPage('accueil')"><span>Visite</span> · Lorraine</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('visites')" data-page="visites">Visites</a></li>
+    <li><a onclick="showPage('scolaires')" data-page="scolaires">Scolaires</a></li>
+    <li><a onclick="showPage('conferences')" data-page="conferences">Conférences</a></li>
+    <li><a onclick="showPage('reservation')" data-page="reservation">Réservation</a></li>
+    <li><a onclick="showPage('actualites')" data-page="actualites">Actualités</a></li>
+    <li><a onclick="showPage('contact')" data-page="contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-sep"></div>
+    <button class="lang-btn active">FR</button>
+    <button class="lang-btn">EN</button>
+    <button class="lang-btn">DE</button>
+    <button class="lang-btn">NL</button>
+    <button class="lang-btn">IT</button>
+    <button class="lang-btn">ES</button>
+  </div>
+</nav>
+
+<!-- ===================== ACCUEIL ===================== -->
+<div id="page-accueil" class="page active">
+  <div class="hero">
+    <div class="hero-ornament">Guide conférencière — Lorraine</div>
+    <h1>Découvrez la <em>Lorraine</em><br>autrement</h1>
+    <p class="hero-sub">Meurthe-et-Moselle · Vosges · Français · English · Deutsch</p>
+    <div class="hero-divider"></div>
+    <button class="btn filled" onclick="showPage('reservation')">Réserver une visite</button>
+    <button class="btn" onclick="showPage('visites')">Découvrir les thèmes</button>
+  </div>
+
+  <div class="services-band">
+    <div class="svc-item" onclick="showPage('visites')"><div class="svc-icon">◈</div><div class="svc-label">Classiques</div></div>
+    <div class="svc-item" onclick="showPage('visites')"><div class="svc-icon">◉</div><div class="svc-label">Thématiques</div></div>
+    <div class="svc-item" onclick="showPage('visites')"><div class="svc-icon">◎</div><div class="svc-label">Rallyes & ludique</div></div>
+    <div class="svc-item" onclick="showPage('scolaires')"><div class="svc-icon">✦</div><div class="svc-label">Scolaires</div></div>
+    <div class="svc-item" onclick="showPage('conferences')"><div class="svc-icon">❧</div><div class="svc-label">Conférences</div></div>
+  </div>
+
+  <div class="section" style="background:var(--pierre);">
+    <div class="section-header">
+      <div class="eyebrow">À votre disposition</div>
+      <div class="section-title">Choisissez votre expérience</div>
+      <div class="divider"></div>
+    </div>
+    <div class="visites-grid">
+      <div class="vcard" onclick="showPage('visites')">
+        <div class="vcard-icon">⚜</div>
+        <h3>Visite classique</h3>
+        <p>Nancy baroque, patrimoine ducal, Place Stanislas et ses ferronneries d'or</p>
+        <span class="vcard-tag">Individuels & groupes</span>
+      </div>
+      <div class="vcard" onclick="showPage('visites')">
+        <div class="vcard-icon">◈</div>
+        <h3>Visite thématique</h3>
+        <p>Art Nouveau, gastronomie lorraine, histoire des ducs… selon l'actualité régionale</p>
+        <span class="vcard-tag">Toutes formules</span>
+      </div>
+      <div class="vcard" onclick="showPage('visites')">
+        <div class="vcard-icon">◉</div>
+        <h3>Rallye & ludique</h3>
+        <p>Circuit gourmand ou jeu de piste pour découvrir la ville en s'amusant</p>
+        <span class="vcard-tag">Familles & groupes</span>
+      </div>
+      <div class="vcard" onclick="showPage('scolaires')">
+        <div class="vcard-icon">✦</div>
+        <h3>Visites scolaires</h3>
+        <p>De la maternelle au lycée — livret pédagogique, lien aux programmes</p>
+        <span class="vcard-tag">Enseignants</span>
+      </div>
+      <div class="vcard" onclick="showPage('conferences')">
+        <div class="vcard-icon">❧</div>
+        <h3>Conférences</h3>
+        <p>Pour associations, résidences seniors, institutions culturelles</p>
+        <span class="vcard-tag">Sur demande</span>
+      </div>
+      <div class="vcard" onclick="showPage('reservation')">
+        <div class="vcard-icon">✿</div>
+        <h3>Visite privée</h3>
+        <p>Programme entièrement personnalisé pour vos événements ou voyages</p>
+        <span class="vcard-tag">Sur mesure</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="actu-strip">
+    <div style="max-width:960px;margin:0 auto;">
+      <div class="section-header" style="text-align:left;margin-bottom:0;">
+        <div class="eyebrow">Actualités</div>
+        <div class="section-title" style="font-size:26px;">Événements & visites associées</div>
+      </div>
+      <div class="actu-grid">
+        <div class="acard" onclick="showPage('actualites')">
+          <div class="atag">Événement · Nancy</div>
+          <h4>Nuit des musées — Musée lorrain</h4>
+          <p>Visite thématique nocturne autour des ducs de Lorraine.</p>
+          <div class="adate">18 mai 2026</div>
+        </div>
+        <div class="acard" onclick="showPage('actualites')">
+          <div class="atag">Visite thématique</div>
+          <h4>Art Nouveau nancéien — nouvelle saison</h4>
+          <p>L'École de Nancy à travers ses façades et ses vitraux emblématiques.</p>
+          <div class="adate">Dès le 1er mai</div>
+        </div>
+        <div class="acard" onclick="showPage('actualites')">
+          <div class="atag">Partenariat · Lunéville</div>
+          <h4>Château de Lunéville — visites guidées</h4>
+          <p>Offre combinée en lien avec les expositions temporaires du château.</p>
+          <div class="adate">Printemps 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">Visite · Lorraine — Guide conférencière · Meurthe-et-Moselle & Vosges</div>
+    <div class="footer-orn">⚜ ❧ ⚜</div>
+    <div class="footer-copy">visite-lorraine.fr</div>
+  </footer>
+</div>
+
+<!-- ===================== VISITES ===================== -->
+<div id="page-visites" class="page">
+  <div class="hero" style="padding:4rem 2rem 3.5rem;">
+    <div class="hero-ornament">Catalogue des visites</div>
+    <h1>Nos <em>visites</em> en Lorraine</h1>
+    <p class="hero-sub">Nancy · Épinal · Toul · Lunéville — et leurs environs</p>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="visites-hero-band">
+    <button class="filter-btn active">Toutes</button>
+    <button class="filter-btn">Classiques</button>
+    <button class="filter-btn">Thématiques</button>
+    <button class="filter-btn">Ludiques</button>
+    <button class="filter-btn">Groupes</button>
+    <button class="filter-btn">Privées</button>
+  </div>
+
+  <div class="section" style="background:var(--pierre);">
+    <div class="visites-catalogue">
+      <div class="cat-card">
+        <div class="cat-img">⚜</div>
+        <div class="cat-body">
+          <span class="cat-badge">Classique</span>
+          <h3>Place Stanislas & le baroque nancéien</h3>
+          <p>La place royale, les ferronneries de Jean Lamour, l'Hôtel de Ville et la fontaine d'Amphitrite.</p>
+          <div class="cat-meta"><span>2h</span><span>FR · EN · DE</span><span>Toute l'année</span></div>
+        </div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-img">◈</div>
+        <div class="cat-body">
+          <span class="cat-badge">Thématique</span>
+          <h3>L'École de Nancy — Art Nouveau</h3>
+          <p>Façades, vitraux, mobilier Gallé et Majorelle. Un voyage dans l'esthétique fin-de-siècle.</p>
+          <div class="cat-meta"><span>2h30</span><span>FR · EN</span><span>Avr – Oct</span></div>
+        </div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-img">◉</div>
+        <div class="cat-body">
+          <span class="cat-badge">Ludique</span>
+          <h3>Rallye gourmand — saveurs lorraines</h3>
+          <p>Circuit de dégustation : mirabelle, quiche, bergamote de Nancy et vins des Côtes de Moselle.</p>
+          <div class="cat-meta"><span>2h</span><span>FR</span><span>Toute l'année</span></div>
+        </div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-img">✦</div>
+        <div class="cat-body">
+          <span class="cat-badge">Thématique</span>
+          <h3>Les ducs de Lorraine — histoire & pouvoir</h3>
+          <p>De René II à Stanislas Leszczyński, l'histoire d'une cour brillante entre France et Empire.</p>
+          <div class="cat-meta"><span>2h30</span><span>FR · DE</span><span>Toute l'année</span></div>
+        </div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-img">❧</div>
+        <div class="cat-body">
+          <span class="cat-badge">Ludique</span>
+          <h3>Jeu de piste — Nancy médiévale</h3>
+          <p>À la découverte du quartier de la Vieille-Ville : remparts, ruelles et secrets oubliés.</p>
+          <div class="cat-meta"><span>1h45</span><span>FR · EN</span><span>Avr – Oct</span></div>
+        </div>
+      </div>
+      <div class="cat-card">
+        <div class="cat-img">✿</div>
+        <div class="cat-body">
+          <span class="cat-badge">Privée</span>
+          <h3>Château de Lunéville — le Versailles lorrain</h3>
+          <p>Visite privée sur mesure du château et de ses jardins, en lien avec les expositions temporaires.</p>
+          <div class="cat-meta"><span>Sur mesure</span><span>FR · EN · DE</span><span>Sur demande</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <button class="btn" onclick="showPage('reservation')">Réserver une visite</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">Visite · Lorraine — Guide conférencière · Meurthe-et-Moselle & Vosges</div>
+    <div class="footer-orn">⚜ ❧ ⚜</div>
+    <div class="footer-copy">visite-lorraine.fr</div>
+  </footer>
+</div>
+
+<!-- ===================== SCOLAIRES ===================== -->
+<div id="page-scolaires" class="page">
+  <div class="hero" style="padding:4rem 2rem 3.5rem;">
+    <div class="hero-ornament">Éducation & patrimoine</div>
+    <h1>Visites <em>scolaires</em></h1>
+    <p class="hero-sub">De la maternelle au lycée — livret pédagogique inclus</p>
+    <div class="hero-divider"></div>
+    <button class="btn filled" onclick="showPage('contact')">Demander un devis</button>
+  </div>
+
+  <div class="section" style="background:var(--pierre);">
+    <div class="section-header">
+      <div class="eyebrow">Niveaux</div>
+      <div class="section-title">Une offre adaptée à chaque âge</div>
+      <div class="divider"></div>
+    </div>
+    <div class="niveau-grid">
+      <div class="niv-card">
+        <div class="niv-badge">Maternelle</div>
+        <h4>Les petits explorateurs</h4>
+        <p>Découverte sensorielle de la ville, contes et légendes lorraines</p>
+      </div>
+      <div class="niv-card">
+        <div class="niv-badge">Primaire</div>
+        <h4>Histoire & patrimoine</h4>
+        <p>Les ducs de Lorraine, l'architecture baroque, jeux de piste</p>
+      </div>
+      <div class="niv-card">
+        <div class="niv-badge">Collège</div>
+        <h4>Art, histoire & société</h4>
+        <p>Art Nouveau, histoire régionale, lien aux programmes officiels</p>
+      </div>
+      <div class="niv-card">
+        <div class="niv-badge">Lycée</div>
+        <h4>Analyse & culture</h4>
+        <p>Patrimoine UNESCO, histoire politique, approfondissement culturel</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="background:var(--pierre-fonce);">
+    <div class="section-header">
+      <div class="eyebrow">Notre approche</div>
+      <div class="section-title">Ce que nous proposons</div>
+      <div class="divider"></div>
+    </div>
+    <div class="sco-features">
+      <div class="feat-item">
+        <h4>Livret pédagogique</h4>
+        <p>Chaque visite est accompagnée d'un livret d'accompagnement personnalisé, support de révision en classe.</p>
+      </div>
+      <div class="feat-item">
+        <h4>Animation en classe</h4>
+        <p>Préparation en amont ou prolongement de la visite : intervention directement dans votre établissement.</p>
+      </div>
+      <div class="feat-item">
+        <h4>Lien aux programmes</h4>
+        <p>Chaque sortie est conçue en lien avec les programmes scolaires nationaux en vigueur.</p>
+      </div>
+      <div class="feat-item">
+        <h4>Projets annuels</h4>
+        <p>Cycles sur 3 ou 4 séances combinant visites in situ et animations en classe pour un projet d'année.</p>
+      </div>
+      <div class="feat-item">
+        <h4>Conférences seniors</h4>
+        <p>Des interventions adaptées pour les résidences, EHPAD et associations de retraités actifs.</p>
+      </div>
+      <div class="feat-item">
+        <h4>Accessibilité</h4>
+        <p>Parcours adaptés sur demande — groupes à besoins spécifiques, PMR, troubles de l'apprentissage.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tarif-band">
+    <div class="eyebrow" style="color:var(--or);">Tarifs indicatifs 2025–2026</div>
+    <div class="section-title" style="color:#fff;font-size:26px;">Formules scolaires</div>
+    <div class="tarif-grid">
+      <div class="tarif-card">
+        <div class="tarif-label">Visite guidée</div>
+        <div class="tarif-prix">170 €</div>
+        <div class="tarif-detail">Par classe · 2h à pied<br>Livret pédagogique inclus</div>
+      </div>
+      <div class="tarif-card featured">
+        <div class="tarif-label">Visite + animation</div>
+        <div class="tarif-prix">260 €</div>
+        <div class="tarif-detail">Visite + 1h d'animation<br>en classe · Tout inclus</div>
+      </div>
+      <div class="tarif-card">
+        <div class="tarif-label">Animation seule</div>
+        <div class="tarif-prix">110 €</div>
+        <div class="tarif-detail">1h en classe uniquement<br>Sans déplacement</div>
+      </div>
+    </div>
+    <div style="margin-top:2rem;">
+      <button class="btn" onclick="showPage('contact')">Demander un devis personnalisé</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">Visite · Lorraine — Guide conférencière · Meurthe-et-Moselle & Vosges</div>
+    <div class="footer-orn">⚜ ❧ ⚜</div>
+    <div class="footer-copy">visite-lorraine.fr</div>
+  </footer>
+</div>
+
+<!-- ===================== RÉSERVATION ===================== -->
+<div id="page-reservation" class="page">
+  <div class="hero" style="padding:3.5rem 2rem 3rem;">
+    <div class="hero-ornament">Réservation en ligne</div>
+    <h1>Choisissez votre <em>créneau</em></h1>
+    <p class="hero-sub">Créneaux publics en direct · Groupes & privés sur demande</p>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="section" style="background:var(--pierre);">
+    <div class="resa-layout">
+      <div>
+        <div class="cal-full">
+          <div class="cal-header">
+            <div class="cal-nav-btn" onclick="calNav(-1)">‹</div>
+            <div class="cal-month-label" id="cal-title">Avril 2026</div>
+            <div class="cal-nav-btn" onclick="calNav(1)">›</div>
+          </div>
+          <div class="cal-grid" id="cal-body">
+            <div class="cal-dh">L</div><div class="cal-dh">M</div><div class="cal-dh">M</div><div class="cal-dh">J</div><div class="cal-dh">V</div><div class="cal-dh">S</div><div class="cal-dh">D</div>
+            <div class="cal-d empty"></div><div class="cal-d empty"></div><div class="cal-d passe">1</div><div class="cal-d passe">2</div><div class="cal-d passe">3</div><div class="cal-d passe">4</div><div class="cal-d passe">5</div>
+            <div class="cal-d passe">6</div><div class="cal-d passe">7</div><div class="cal-d passe">8</div><div class="cal-d passe">9</div><div class="cal-d passe">10</div><div class="cal-d passe">11</div><div class="cal-d passe">12</div>
+            <div class="cal-d passe">13</div><div class="cal-d today">14</div><div class="cal-d dispo" onclick="selectDay(this,'15 avril')">15</div><div class="cal-d">16</div><div class="cal-d dispo" onclick="selectDay(this,'17 avril')">17</div><div class="cal-d dispo" onclick="selectDay(this,'18 avril')">18</div><div class="cal-d dispo-light" onclick="selectDay(this,'19 avril')">19</div>
+            <div class="cal-d">20</div><div class="cal-d dispo" onclick="selectDay(this,'21 avril')">21</div><div class="cal-d">22</div><div class="cal-d dispo" onclick="selectDay(this,'23 avril')">23</div><div class="cal-d">24</div><div class="cal-d dispo-light" onclick="selectDay(this,'25 avril')">25</div><div class="cal-d dispo-light" onclick="selectDay(this,'26 avril')">26</div>
+            <div class="cal-d dispo" onclick="selectDay(this,'27 avril')">27</div><div class="cal-d">28</div><div class="cal-d dispo" onclick="selectDay(this,'29 avril')">29</div><div class="cal-d">30</div>
+          </div>
+          <div class="cal-legend">
+            <div class="leg-item"><div class="leg-dot" style="background:#B8962E"></div>Disponible</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#E8D898"></div>Quelques places</div>
+            <div class="leg-item"><div class="leg-dot" style="background:#E0D5BC"></div>Complet</div>
+          </div>
+        </div>
+        <div id="creneaux-block" style="margin-top:1.2rem;display:none;">
+          <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--or);margin-bottom:0.6rem;" id="creneaux-date"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="creneaux-list"></div>
+        </div>
+      </div>
+
+      <div class="resa-panel">
+        <div class="resa-type-select">
+          <h3>Type de visite</h3>
+          <div class="resa-types">
+            <div class="rtype active" onclick="selectType(this)">
+              <div class="rtype-dot"></div>
+              <div><div class="rtype-label">Créneau public</div><div class="rtype-sub">Groupe de 12 pers. max — réservation directe</div></div>
+            </div>
+            <div class="rtype" onclick="selectType(this)">
+              <div class="rtype-dot"></div>
+              <div><div class="rtype-label">Groupe privé</div><div class="rtype-sub">À partir de 2 personnes — sur demande</div></div>
+            </div>
+            <div class="rtype" onclick="selectType(this)">
+              <div class="rtype-dot"></div>
+              <div><div class="rtype-label">Scolaire</div><div class="rtype-sub">Classe entière — devis gratuit</div></div>
+            </div>
+            <div class="rtype" onclick="selectType(this)">
+              <div class="rtype-dot"></div>
+              <div><div class="rtype-label">Conférence</div><div class="rtype-sub">Association, entreprise, senior — sur demande</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resa-form">
+          <h3>Vos coordonnées</h3>
+          <div class="form-row">
+            <label>Nom & prénom</label>
+            <input type="text" placeholder="Marie Dupont">
+          </div>
+          <div class="form-row">
+            <label>Email</label>
+            <input type="email" placeholder="marie@exemple.fr">
+          </div>
+          <div class="form-row">
+            <label>Téléphone</label>
+            <input type="tel" placeholder="+33 6 00 00 00 00">
+          </div>
+          <div class="form-row">
+            <label>Visite souhaitée</label>
+            <select>
+              <option>Place Stanislas & baroque nancéien</option>
+              <option>L'École de Nancy — Art Nouveau</option>
+              <option>Rallye gourmand — saveurs lorraines</option>
+              <option>Les ducs de Lorraine</option>
+              <option>Jeu de piste — Nancy médiévale</option>
+              <option>Autre / Sur mesure</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Message (optionnel)</label>
+            <textarea placeholder="Précisions sur votre groupe, demandes particulières…"></textarea>
+          </div>
+          <button class="submit-btn">Envoyer la demande</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">Visite · Lorraine — Guide conférencière · Meurthe-et-Moselle & Vosges</div>
+    <div class="footer-orn">⚜ ❧ ⚜</div>
+    <div class="footer-copy">visite-lorraine.fr</div>
+  </footer>
+</div>
+
+<!-- ===================== ACTUALITÉS ===================== -->
+<div id="page-actualites" class="page">
+  <div class="hero" style="padding:4rem 2rem 3.5rem;">
+    <div class="hero-ornament">Actualités & agenda</div>
+    <h1>Événements & <em>visites</em></h1>
+    <p class="hero-sub">Le lien entre l'actualité régionale et nos thèmes de visite</p>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="section" style="background:var(--pierre);">
+    <div class="actu-layout">
+      <div class="actu-list">
+        <div class="actu-article">
+          <div class="actu-img">◈</div>
+          <div class="actu-body">
+            <div class="actu-cats"><span class="actu-cat">Événement</span><span class="actu-cat">· Nancy</span></div>
+            <h3>Nuit des musées — une visite nocturne au Musée lorrain</h3>
+            <p>À l'occasion de la Nuit européenne des musées, une visite thématique nocturne autour des ducs de Lorraine et du patrimoine baroque.</p>
+            <div class="actu-footer"><span class="actu-d">18 mai 2026</span><span class="actu-lire">Lire & réserver</span></div>
+          </div>
+        </div>
+        <div class="actu-article">
+          <div class="actu-img">⚜</div>
+          <div class="actu-body">
+            <div class="actu-cats"><span class="actu-cat">Visite thématique</span></div>
+            <h3>Art Nouveau nancéien — ouverture de la nouvelle saison</h3>
+            <p>Redécouvrez l'École de Nancy à travers ses façades, ses vitraux et son mobilier emblématique. Nouvelle visite ajoutée : le Parc de la Pépinière et ses sculptures.</p>
+            <div class="actu-footer"><span class="actu-d">Dès le 1er mai 2026</span><span class="actu-lire">Lire & réserver</span></div>
+          </div>
+        </div>
+        <div class="actu-article">
+          <div class="actu-img">❧</div>
+          <div class="actu-body">
+            <div class="actu-cats"><span class="actu-cat">Partenariat</span><span class="actu-cat">· Lunéville</span></div>
+            <h3>Château de Lunéville — nouveau partenariat visites guidées</h3>
+            <p>En lien avec les expositions temporaires du château, une offre combinée visite guidée + accès exposition est désormais disponible à la réservation.</p>
+            <div class="actu-footer"><span class="actu-d">Printemps 2026</span><span class="actu-lire">Lire & réserver</span></div>
+          </div>
+        </div>
+        <div class="actu-article">
+          <div class="actu-img">✦</div>
+          <div class="actu-body">
+            <div class="actu-cats"><span class="actu-cat">Scolaires</span><span class="actu-cat">· Primaire</span></div>
+            <h3>Nouveaux livrets pédagogiques pour le cycle 2</h3>
+            <p>Pour la rentrée 2026, deux nouveaux livrets d'accompagnement pour les classes de CE1 et CE2, en lien avec les programmes d'histoire-géographie.</p>
+            <div class="actu-footer"><span class="actu-d">Rentrée septembre 2026</span><span class="actu-lire">En savoir plus</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actu-sidebar">
+        <div class="sidebar-block">
+          <h4>Agenda à venir</h4>
+          <div class="agenda-item"><div class="agenda-date">18 mai</div><div class="agenda-title">Nuit des musées · Nancy</div></div>
+          <div class="agenda-item"><div class="agenda-date">1er juin</div><div class="agenda-title">Journées de l'architecture</div></div>
+          <div class="agenda-item"><div class="agenda-date">21 juin</div><div class="agenda-title">Fête de la musique · Visite guidée</div></div>
+          <div class="agenda-item"><div class="agenda-date">Juil–Août</div><div class="agenda-title">Visites estivales quotidiennes</div></div>
+          <div class="agenda-item"><div class="agenda-date">Sep 2026</div><div class="agenda-title">Journées du Patrimoine</div></div>
+        </div>
+        <div class="sidebar-block">
+          <h4>Thèmes</h4>
+          <div class="sidebar-tags">
+            <span class="s-tag">Art Nouveau</span>
+            <span class="s-tag">Baroque</span>
+            <span class="s-tag">Gastronomie</span>
+            <span class="s-tag">Ducs de Lorraine</span>
+            <span class="s-tag">Scolaires</span>
+            <span class="s-tag">Patrimoine</span>
+            <span class="s-tag">Lunéville</span>
+            <span class="s-tag">Épinal</span>
+          </div>
+        </div>
+        <div class="sidebar-block">
+          <h4>Inscription newsletter</h4>
+          <p style="font-size:12px;color:var(--muted);font-style:italic;margin-bottom:0.8rem;line-height:1.5;">Recevez les nouvelles visites thématiques et l'agenda en avant-première.</p>
+          <div class="form-row"><input type="email" placeholder="votre@email.fr" style="width:100%;"></div>
+          <button class="submit-btn" style="margin-top:0.5rem;">S'inscrire</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">Visite · Lorraine — Guide conférencière · Meurthe-et-Moselle & Vosges</div>
+    <div class="footer-orn">⚜ ❧ ⚜</div>
+    <div class="footer-copy">visite-lorraine.fr</div>
+  </footer>
+</div>
+
+<!-- ===================== CONFÉRENCES ===================== -->
+<div id="page-conferences" class="page">
+  <div class="hero" style="padding:4rem 2rem 3.5rem;">
+    <div class="hero-ornament">Conférences & interventions</div>
+    <h1>Partager la <em>connaissance</em></h1>
+    <p class="hero-sub">Associations · Résidences seniors · Institutions · Entreprises</p>
+    <div class="hero-divider"></div>
+    <button class="btn filled" onclick="showPage('contact')">Demander un programme</button>
+  </div>
+
+  <div class="section" style="background:var(--pierre);">
+    <div class="section-header">
+      <div class="eyebrow">Nos formules</div>
+      <div class="section-title">À qui s'adressent nos conférences</div>
+      <div class="divider"></div>
+    </div>
+    <div class="conf-grid">
+      <div class="conf-card">
+        <div class="conf-num">01</div>
+        <h3>Conférences seniors</h3>
+        <p>Des interventions culturelles adaptées, enrichissantes et accessibles pour les résidences et EHPAD.</p>
+        <div class="conf-themes">
+          <div class="conf-theme">Les grandes heures de la Lorraine ducale</div>
+          <div class="conf-theme">Art Nouveau : l'École de Nancy racontée</div>
+          <div class="conf-theme">Gastronomie lorraine — histoire & traditions</div>
+          <div class="conf-theme">La Première Guerre mondiale en Lorraine</div>
+        </div>
+      </div>
+      <div class="conf-card">
+        <div class="conf-num">02</div>
+        <h3>Conférences grand public</h3>
+        <p>Pour les associations culturelles, amicales, clubs de randonnée, bibliothèques et espaces culturels.</p>
+        <div class="conf-themes">
+          <div class="conf-theme">Stanislas, le roi sans royaume</div>
+          <div class="conf-theme">La Glucoserie de Conférence-sur-Moselle</div>
+          <div class="conf-theme">Émile Gallé, artiste et botaniste</div>
+          <div class="conf-theme">Nancy 1900 : une ville en mouvement</div>
+        </div>
+      </div>
+      <div class="conf-card">
+        <div class="conf-num">03</div>
+        <h3>Interventions entreprises</h3>
+        <p>Team building culturel, séminaires d'entreprise, accueil de délégations étrangères — en FR, EN ou DE.</p>
+        <div class="conf-themes">
+          <div class="conf-theme">Visite privatisée sur thème au choix</div>
+          <div class="conf-theme">Conférence + dégustation lorraine</div>
+          <div class="conf-theme">Parcours bilingue pour délégations</div>
+        </div>
+      </div>
+      <div class="conf-card">
+        <div class="conf-num">04</div>
+        <h3>Partenariats institutionnels</h3>
+        <p>Collaboration avec offices de tourisme, musées, collectivités et établissements culturels de Lorraine.</p>
+        <div class="conf-themes">
+          <div class="conf-theme">Programmation conjointe avec musées</div>
+          <div class="conf-theme">Visites dans le cadre d'expositions</div>
+          <div class="conf-theme">Accueil de groupes touristiques</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="conf-public-band">
+    <div style="max-width:860px;margin:0 auto;">
+      <div class="section-header">
+        <div class="eyebrow">Nos partenaires</div>
+        <div class="section-title" style="font-size:26px;">Ils nous font confiance</div>
+        <div class="divider"></div>
+      </div>
+      <div class="public-grid">
+        <div class="pub-card">
+          <div class="pub-icon">⚜</div>
+          <h4>Château de Lunéville</h4>
+          <p>Visites guidées et conférences en lien avec la programmation du château</p>
+        </div>
+        <div class="pub-card">
+          <div class="pub-icon">◈</div>
+          <h4>Offices de tourisme</h4>
+          <p>Grand Nancy, Épinal, Toul — prestataire référencé</p>
+        </div>
+        <div class="pub-card">
+          <div class="pub-icon">✦</div>
+          <h4>Mairie de Nancy</h4>
+          <p>Interventions dans le cadre des événements culturels municipaux</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">Visite · Lorraine — Guide conférencière · Meurthe-et-Moselle & Vosges</div>
+    <div class="footer-orn">⚜ ❧ ⚜</div>
+    <div class="footer-copy">visite-lorraine.fr</div>
+  </footer>
+</div>
+
+<!-- ===================== CONTACT ===================== -->
+<div id="page-contact" class="page">
+  <div class="hero" style="padding:4rem 2rem 3.5rem;">
+    <div class="hero-ornament">Prenons contact</div>
+    <h1>Écrivez-<em>nous</em></h1>
+    <p class="hero-sub">Réponse sous 48h · Devis gratuit · FR · EN · DE</p>
+    <div class="hero-divider"></div>
+  </div>
+
+  <div class="section" style="background:var(--pierre);">
+    <div class="contact-layout">
+      <div class="contact-info">
+        <h3>Guide conférencière en Lorraine</h3>
+        <p>Passionnée par le patrimoine lorrain, j'accompagne particuliers, groupes, scolaires et institutions dans la découverte de notre région depuis plusieurs années.</p>
+        <div class="contact-items">
+          <div class="citem">
+            <div class="citem-icon">◈</div>
+            <div class="citem-text">
+              <span class="citem-label">Email</span>
+              contact@visite-lorraine.fr
+            </div>
+          </div>
+          <div class="citem">
+            <div class="citem-icon">◉</div>
+            <div class="citem-text">
+              <span class="citem-label">Téléphone</span>
+              +33 6 XX XX XX XX
+            </div>
+          </div>
+          <div class="citem">
+            <div class="citem-icon">⚜</div>
+            <div class="citem-text">
+              <span class="citem-label">Zone d'intervention</span>
+              Meurthe-et-Moselle & Vosges<br>Nancy · Épinal · Toul · Lunéville
+            </div>
+          </div>
+          <div class="citem">
+            <div class="citem-icon">❧</div>
+            <div class="citem-text">
+              <span class="citem-label">Langues</span>
+              Français · English · Deutsch · Nederlands · Italiano · Español
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-card">
+        <h3>Votre message</h3>
+        <div class="form-row">
+          <label>Nom & prénom</label>
+          <input type="text" placeholder="Marie Dupont">
+        </div>
+        <div class="form-row">
+          <label>Email</label>
+          <input type="email" placeholder="marie@exemple.fr">
+        </div>
+        <div class="form-row">
+          <label>Objet de la demande</label>
+          <select>
+            <option>Réservation d'une visite</option>
+            <option>Demande de devis scolaire</option>
+            <option>Conférence / intervention</option>
+            <option>Partenariat institutionnel</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Message</label>
+          <textarea placeholder="Décrivez votre projet, la date souhaitée, le nombre de personnes…" style="min-height:100px;"></textarea>
+        </div>
+        <button class="submit-btn">Envoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="partenaires-band">
+    <div class="eyebrow" style="text-align:center;">Partenaires & réseaux</div>
+    <div class="section-title" style="text-align:center;font-size:24px;">Ils nous font confiance</div>
+    <div class="partenaires-grid">
+      <div class="partner-badge"><span>⚜</span>Château de Lunéville</div>
+      <div class="partner-badge"><span>◈</span>Office de tourisme Grand Nancy</div>
+      <div class="partner-badge"><span>✦</span>Mairie de Nancy</div>
+      <div class="partner-badge"><span>❧</span>La Glucoserie</div>
+      <div class="partner-badge"><span>◉</span>OT Épinal</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">Visite · Lorraine — Guide conférencière · Meurthe-et-Moselle & Vosges</div>
+    <div class="footer-orn">⚜ ❧ ⚜</div>
+    <div class="footer-copy">visite-lorraine.fr</div>
+  </footer>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.toggle('active', a.dataset.page === id);
+  });
+  window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+function selectType(el) {
+  document.querySelectorAll('.rtype').forEach(r => r.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selectDay(el, label) {
+  document.querySelectorAll('.cal-d').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  var block = document.getElementById('creneaux-block');
+  document.getElementById('creneaux-date').textContent = 'Créneaux disponibles — ' + label;
+  var list = document.getElementById('creneaux-list');
+  var creneaux = ['10h00', '14h00', '16h30'];
+  list.innerHTML = '';
+  creneaux.forEach(function(h) {
+    var btn = document.createElement('button');
+    btn.textContent = h;
+    btn.style.cssText = 'font-size:12px;letter-spacing:0.12em;padding:7px 16px;border:1px solid var(--or);background:transparent;color:var(--or);cursor:pointer;font-family:EB Garamond,serif;';
+    btn.onclick = function() {
+      list.querySelectorAll('button').forEach(b => b.style.background = 'transparent');
+      this.style.background = 'var(--or)';
+      this.style.color = 'var(--noir)';
+    };
+    list.appendChild(btn);
+  });
+  block.style.display = 'block';
+}
+
+var calOffset = 0;
+var months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+function calNav(dir) {
+  calOffset += dir;
+  var now = new Date(2026, 3, 1);
+  var d = new Date(now.getFullYear(), now.getMonth() + calOffset, 1);
+  document.getElementById('cal-title').textContent = months[d.getMonth()] + ' ' + d.getFullYear();
+}
+</script>
+</body>
+</html>
